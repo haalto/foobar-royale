@@ -1,0 +1,20 @@
+{
+  "name": "foobar-royale",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "client": "yarn workspace client start",
+    "server": "yarn workspace server watch",
+    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
