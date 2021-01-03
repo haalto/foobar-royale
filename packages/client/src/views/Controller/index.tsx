@@ -67,6 +67,7 @@ const Controller: React.FC = () => {
   const handleRightEnd = (event: any, data: JoystickData) => {
     //setAimAngle(null);
     console.log(data);
+    socket.emit("player-shoot");
     console.log("shoot");
   };
 

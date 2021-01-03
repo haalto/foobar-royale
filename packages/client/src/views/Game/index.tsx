@@ -3,13 +3,29 @@ import io from "socket.io-client";
 import Canvas from "./Canvas";
 
 interface Player {
+  id: string;
   x: number;
   y: number;
   aimAngle: number;
+  health: number;
+}
+
+interface Bullet {
+  x: number;
+  y: number;
+  angle: number;
+}
+
+interface GameState {
+  players: Player[];
+  bullets: Bullet[];
 }
 
 const Game = () => {
-  const [gameState, setGameState] = useState<Player[]>([]);
+  const [gameState, setGameState] = useState<GameState>({
+    players: [],
+    bullets: [],
+  });
 
   const { current: socket } = useRef(
     io("http://localhost:4000", {
@@ -20,32 +36,39 @@ const Game = () => {
     })
   );
 
-  function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
-    const { width, height } = canvas.getBoundingClientRect();
-    if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
-      return true; // here you can return some usefull information like delta width and delta height instead of just true
-      // this information can be used in the next redraw...
-    }
-    return false;
-  }
-
   const draw = async (ctx: CanvasRenderingContext2D, frameCount: number) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    resizeCanvasToDisplaySize(ctx.canvas);
-    if (gameState && gameState.length !== 0) {
-      for (const player of gameState) {
+
+    //Draw players
+    if (gameState.players && gameState.players.length !== 0) {
+      for (const player of gameState.players) {
         ctx.fillStyle = "#000000";
         ctx.beginPath();
+        //Draw id and health
+        ctx.font = "10px serif";
+        ctx.fillText(player.id, player.x - 50, player.y + -30);
+        ctx.fillText(player.health.toString(), player.x - 8, player.y - 16);
+        //Draw body
         ctx.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+
+        //Draw weapon
         ctx.arc(
-          player.x + 15 * Math.cos(player.aimAngle),
-          player.y - 15 * Math.sin(player.aimAngle),
+          player.x + 12 * Math.cos(player.aimAngle),
+          player.y - 12 * Math.sin(player.aimAngle),
           4,
           0,
           2 * Math.PI
         );
+        ctx.fill();
+      }
+    }
+
+    //Draw bullets
+    if (gameState.bullets && gameState.bullets.length !== 0) {
+      for (const bullet of gameState.bullets) {
+        ctx.fillStyle = "#000000";
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, 3, 0, 2 * Math.PI);
         ctx.fill();
       }
     }
@@ -54,7 +77,7 @@ const Game = () => {
   useEffect(() => {
     socket.open();
 
-    socket.on("gameState-update", (data: Player[]) => {
+    socket.on("gameState-update", (data: GameState) => {
       setGameState(data);
     });
 

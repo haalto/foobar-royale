@@ -11,7 +11,9 @@ const Canvas: React.FC<Props> = (props) => {
 
   return (
     <canvas
-      style={{ width: "100vw", height: "100vh" }}
+      width={860}
+      height={640}
+      style={{ width: "95vw", height: "95vh", border: "1px solid black" }}
       ref={canvasRef}
       {...rest}
     />
