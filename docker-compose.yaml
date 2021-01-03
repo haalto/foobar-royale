@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  client:
+    container_name: client
+    build:
+      context: ./packages/client
+      dockerfile: Dockerfile
+    environment:
+      - "SERVER_URI=localhost:4000"
+    ports:
+      - "80:80"
+  server:
+    container_name: server
+    build:
+      context: ./packages/server
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
