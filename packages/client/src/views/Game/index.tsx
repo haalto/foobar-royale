@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import { config } from "../../config";
 import Canvas from "./Canvas";
 
 interface Player {
@@ -28,7 +29,7 @@ const Game = () => {
   });
 
   const { current: socket } = useRef(
-    io("http://localhost:4000", {
+    io(`http://${config.SERVER_URI}`, {
       autoConnect: false,
       query: {
         clientType: "game",

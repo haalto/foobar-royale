@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactNipple from "react-nipple";
 import styled from "styled-components";
 import io from "socket.io-client";
+import { config } from "../../config";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -15,7 +16,7 @@ const Controller: React.FC = () => {
   const [aimAngle, setAimAngle] = useState<number | null>(null);
 
   const { current: socket } = useRef(
-    io("http://localhost:4000", {
+    io(`http://${config.SERVER_URI}`, {
       autoConnect: false,
       query: {
         clientType: "player",

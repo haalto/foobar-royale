@@ -16,4 +16,4 @@ services:
       context: ./packages/server
       dockerfile: Dockerfile
     ports:
-      - "5001:5001"
+      - "4000:4000"
