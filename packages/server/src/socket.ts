@@ -21,7 +21,7 @@ class Player {
     this.hitBox = 10;
     this.health = 100;
     this._weapon = null;
-    this.movementSpeed = 1;
+    this.movementSpeed = 5;
   }
 
   get weapon(): Weapon | null {
